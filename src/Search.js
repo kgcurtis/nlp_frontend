@@ -31,7 +31,7 @@ class Search extends Component {
             <br/><MDBBtn size="sm" type="submit" onClick={this.onSubmit}><MDBIcon icon="search" />Search</MDBBtn>
          </MDBCol>
          </Row>
-        <ResultsList results={this.state.results}/>
+        <ResultsList results={this.state.results} />
       </Container>
     );
   }

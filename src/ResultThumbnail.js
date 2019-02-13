@@ -10,16 +10,16 @@ class ResultThumbnail extends Component {
   render() {
 
     const actors = this.state.actors.slice(0,5).map(actor => (
-      <div key={actor}>{actor}</div>
+      <div key={actor} dangerouslySetInnerHTML={{ __html: actor }}></div>
     ));
 
     return(
         <div>
           <Card>
             <CardBody>
-              <h4>{ this.state.title }</h4>
-              <h6>{ this.state.tagline }</h6>
-              <h5>{ this.state.overview }</h5>
+              <h4 dangerouslySetInnerHTML={{ __html: this.state.title }}></h4>
+              <h6 dangerouslySetInnerHTML={{ __html:  this.state.tagline }}></h6>
+              <h5 dangerouslySetInnerHTML={{ __html:  this.state.overview }}></h5>
               { actors }
           </CardBody>
           </Card>
