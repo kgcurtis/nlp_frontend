@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Card, CardBody, CardTitle } from 'mdbreact';
+import { Card, CardBody } from 'mdbreact';
 
 class ResultThumbnail extends Component {
   constructor(props){

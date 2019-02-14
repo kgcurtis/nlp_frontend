@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Search from './Search';
-import { Container, Row, Col } from 'mdbreact';
+import { Container } from 'mdbreact';
 
 class App extends Component {
   render() {

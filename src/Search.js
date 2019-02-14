@@ -1,23 +1,42 @@
 import React, { Component } from 'react';
-import { Container, MDBBtn, MDBIcon, Row, MDBInput, MDBCol, MDBFormInline } from "mdbreact";
+import { Container, Row, MDBCol } from "mdbreact";
 import ResultsList from './ResultsList';
 import * as solr from './solr';
+import { AutoComplete }   from 'material-ui';
+import getMuiTheme        from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider   from 'material-ui/styles/MuiThemeProvider';
 
 class Search extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      results: []
+      results: [],
+      dataSource: [],
+      inputValue: ''
     };
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onUpdateInput = this.onUpdateInput.bind(this);
+    this.onNewRequest = this.onNewRequest.bind(this);
+
   }
 
+  onUpdateInput(inputValue) {
+    const self = this;
+    this.setState({
+      inputValue: inputValue }, function() {
+        self.performSearch();
+      });
+  }
 
-  onSubmit(e){
-    e.preventDefault();
+  performSearch() {
+    solr.performSuggestionSearch(this.state.inputValue).then(results => {
+      this.setState({ dataSource : results });
+    })
+  }
+
+  onNewRequest(request) {
     this.setState({ results : [] });
-    solr.doGetSearch(this.state.query).then(results => {
+    solr.doGetSearch(request).then(results => {
       this.setState({ results : results });
     });
   }
@@ -26,10 +45,11 @@ class Search extends Component {
     return(
       <Container>
         <Row>
-          <MDBCol sm="12">
-            <MDBInput onChange={event => {this.setState({query: event.target.value})}} hint="Search for a movie..." type="text" containerClass="mt-0" />
-            <br/><MDBBtn size="sm" type="submit" onClick={this.onSubmit}><MDBIcon icon="search" />Search</MDBBtn>
-         </MDBCol>
+        <MDBCol sm="12">
+        <MuiThemeProvider muiTheme={getMuiTheme()}>
+          <AutoComplete placeholder='Search for a movie...' id='autocomplete' fullWidth={true} onNewRequest={this.onNewRequest} filter={(searchText, key) => true} dataSource={this.state.dataSource} onUpdateInput={this.onUpdateInput}/>
+          </MuiThemeProvider>
+        </MDBCol>
          </Row>
         <ResultsList results={this.state.results} />
       </Container>
